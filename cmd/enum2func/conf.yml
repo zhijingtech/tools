@@ -1,0 +1,23 @@
+tasks:
+    - type: ctxKey
+      input: ./internal/biz/context.go
+      output: ""
+      trimPrefix: "ctxKey"
+      package: ""
+      imports:
+        - '"context"'
+        - ''
+        - 'v1 "gitlab.szzhijing.com/quanbu/apaas/api/v1"'
+      lines:
+        - ''
+        - 'func (ctx *Context) Get{{.TrimmedName}}() (*{{.TrimmedName}}, error) {'
+        - '  info, ok := ctx.Value({{.Name}}).(*{{.TrimmedName}})'
+        - '  if !ok {'
+        - '    return nil, v1.ErrorNotFound("{{.TrimmedName}} not found")'
+        - '  }'
+        - '  return info, nil'
+        - '}'
+        - ''
+        - 'func (ctx *Context) Set{{.TrimmedName}}(info *{{.TrimmedName}})  {'
+        - '	ctx.Context = context.WithValue(ctx.Context, {{.Name}}, info)'
+        - '}'
