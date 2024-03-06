@@ -12,8 +12,6 @@ type ctxKey byte
 const (
 	ctxKeyCompanyInfo ctxKey = iota // 公司信息
 	ctxKeyEnvInfo                   // 环境信息
-	ctxKeyAppInfo                   // 应用信息
-	ctxKeyUserInfo                  // 用户信息
 )
 ```
 
@@ -28,7 +26,7 @@ tasks:
       imports:
         - '"context"'
         - ''
-        - 'v1 "gitlab.szzhijing.com/quanbu/apaas/api/v1"'
+        - 'v1 "github.com/zhijingtech/api/v1"'
       lines:
         - ''
         - 'func (ctx *Context) Get{{.TrimmedName}}() (*{{.TrimmedName}}, error) {'
@@ -53,7 +51,7 @@ package biz
 import (
 	"context"
 
-	v1 "gitlab.szzhijing.com/quanbu/apaas/api/v1"
+	v1 "github.com/zhijingtech/api/v1"
 )
 
 func (ctx *Context) GetCompanyInfo() (*CompanyInfo, error) {
@@ -79,29 +77,4 @@ func (ctx *Context) GetEnvInfo() (*EnvInfo, error) {
 func (ctx *Context) SetEnvInfo(info *EnvInfo) {
 	ctx.Context = context.WithValue(ctx.Context, ctxKeyEnvInfo, info)
 }
-
-func (ctx *Context) GetAppInfo() (*AppInfo, error) {
-	info, ok := ctx.Value(ctxKeyAppInfo).(*AppInfo)
-	if !ok {
-		return nil, v1.ErrorNotFound("AppInfo not found")
-	}
-	return info, nil
-}
-
-func (ctx *Context) SetAppInfo(info *AppInfo) {
-	ctx.Context = context.WithValue(ctx.Context, ctxKeyAppInfo, info)
-}
-
-func (ctx *Context) GetUserInfo() (*UserInfo, error) {
-	info, ok := ctx.Value(ctxKeyUserInfo).(*UserInfo)
-	if !ok {
-		return nil, v1.ErrorNotFound("UserInfo not found")
-	}
-	return info, nil
-}
-
-func (ctx *Context) SetUserInfo(info *UserInfo) {
-	ctx.Context = context.WithValue(ctx.Context, ctxKeyUserInfo, info)
-}
-
 ```
